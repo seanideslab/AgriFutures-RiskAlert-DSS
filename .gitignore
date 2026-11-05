@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+data/processed/
+outputs/panel/
+*.bak
+*.log
+.DS_Store

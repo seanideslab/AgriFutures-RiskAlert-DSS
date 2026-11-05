@@ -1,0 +1,51 @@
+{
+ "run_id": "spec-v2.1",
+ "python": "3.13.18",
+ "pandas": "3.0.5",
+ "numpy": "2.5.3",
+ "scikit_learn": "1.9.1",
+ "matplotlib": "3.11.2",
+ "bootstrap_seed": 20261105,
+ "data_source": {
+  "repo": "https://github.com/robcarver17/pysystemtrade",
+  "commit": "a62269d27707806ba61f516791b71a9cd14cf268",
+  "commit_date": "2026-09-29",
+  "check": "21 raw CSV git blob hashes equal to this commit"
+ },
+ "data_sha256": {
+  "data/raw/adjusted_prices_csv/COCOA.csv": "acc8ac18fdde2a89beda87ce32a5fe3d2406a4c762b70cbac46dd07bd794543e",
+  "data/raw/adjusted_prices_csv/COFFEE.csv": "db79c35ac8a2e338c5efc400d49a0deb650afd88aee97b57fa11c6f8be63ffd7",
+  "data/raw/adjusted_prices_csv/CORN.csv": "f8b59d6fc0a75cd016a42ec70964110a9266f56eba3b40e52e89445bc55fd3f8",
+  "data/raw/adjusted_prices_csv/SOYBEAN.csv": "a49d86c4525892c5872470299bdae9ea223483a3eaa58564773f956baaaed016",
+  "data/raw/adjusted_prices_csv/SUGAR11.csv": "135750af247587cabcc50ef2240bf74311ce30e8499d6c821db252648e08bac6",
+  "data/raw/adjusted_prices_csv/WHEAT.csv": "8dd359d49569e157e89690cf46f9d1b00132d6be379516b72bdd5bf767f74ad6",
+  "data/raw/instrumentconfig.csv": "33d4cecb6eacebf8400e23727036b28cfead50b7c74030f28487e0c119a5776b",
+  "data/raw/multiple_prices_csv/COCOA.csv": "d21d949f2b97291ffa9a4ecf0b584db095cb823cc4a0a510f24f936e42b4577a",
+  "data/raw/multiple_prices_csv/COFFEE.csv": "3252a6b89fc32187ac1a427cd7ba99f7c65d64e3e8e5a03ca58aca9f6ff40264",
+  "data/raw/multiple_prices_csv/CORN.csv": "47183abccaa9e260e2c934acab3819ee0d4edcaf3fa7fc0c4a96abd933452e1c",
+  "data/raw/multiple_prices_csv/SOYBEAN.csv": "911a09de70eca193a756bf88a12eca98eb195a248f3007ade5573c029f0b1bf4",
+  "data/raw/multiple_prices_csv/SUGAR11.csv": "a6d626bd104d15b782a0cc9a0b5ecd7467e3068cae0e9a36970e6abdab429258",
+  "data/raw/multiple_prices_csv/WHEAT.csv": "a038800ee43cc86d30c0cf2989225f5190ebd9a2499dd10bca83528703ab912e",
+  "data/raw/roll_calendars_csv/COCOA.csv": "a887f7dd383fac4715552e2b3c07be32adbc3b62a7d0384b53c3f74771f85bf2",
+  "data/raw/roll_calendars_csv/COFFEE.csv": "d328ad3553599e212d8b249313672a8d632e9639f5aa4af686c46ff3fcd3383b",
+  "data/raw/roll_calendars_csv/CORN.csv": "0ebbe37d0d0ecd9645677d578a035780378a088e51581396fb8c389effb9029e",
+  "data/raw/roll_calendars_csv/SOYBEAN.csv": "8b3a0c91c11737d6e6f17bd8a6f995b429f2e60c7df4ad26be50bd7a8e6bc2a2",
+  "data/raw/roll_calendars_csv/SUGAR11.csv": "d832efe9dbbc42971805c4563f9dd84fddcdaba4f179f9a33abc8450980802af",
+  "data/raw/roll_calendars_csv/WHEAT.csv": "8c6af70b2d67a645d2d53b0d9f410238e817f77274e828b9d2eb69f2b0715f53",
+  "data/raw/rollconfig.csv": "8c752d19cd6ce9f512caa888189a9264793a98f68d99791fe05b4d7f93485422",
+  "data/raw/spreadcosts.csv": "a3458c27842b0ff1057c565e7d067f1db7ced9ee9084643185abadd383d87175"
+ },
+ "code_sha256": {
+  "src/causal_chain.py": "1547fa9f4e4e5150336a8edda4f84aa3893cc00b02cdf6668b424f4fa2ce5171",
+  "src/core.py": "baeac0b68401104a6f1af6f5f9413a035c8fb5f7a80e64f25ae8eb57e4052524",
+  "src/diagnostics.py": "8d5c0e3cbd05aeff3f5da4065167fb5504af31e952e9dc2c1ee571ccd87d4e5f",
+  "src/evaluation.py": "ae6d4aa127288782fe54f2bc397a76df428fc297977cdbff67388d24a058216a",
+  "src/experiment.py": "074f07244a42ce8bf10c2e40d4bb98bb0337b228b433bf63090749e30df4224f",
+  "src/fetch_data.py": "4f87b234c579ef0b4e629ba9a2d5c75e1adc70da7cdbfdb6355ec388d82da70b",
+  "src/fig_arch.py": "7a70bc0b221c806d90829fb3a53ec7e1129f9051c011cff18af5f8cafc984df0",
+  "src/fig_case.py": "cde3d8f944061197ec8b4cef5fc723c16f77c31676b5de9ddcc2ff86d819b7da",
+  "src/figures.py": "5efb93c17c5390b79c9019d009c539a23179c0f2b04faeac40d4cc6bca3d7599",
+  "tests/acceptance.py": "ffdaf1db73314b38d8a6475a3644ee8c7fc75c593aec49c0fc8a69844d0a2b48"
+ },
+ "spec_sha256": "86b404f32e09959f0babe96968d0b0d48fd37f53746cb54893dd41175f41755d"
+}

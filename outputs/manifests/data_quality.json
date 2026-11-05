@@ -1,0 +1,80 @@
+{
+ "CORN": {
+  "days": 6122,
+  "deferred_days": 45,
+  "forced_rolls_unscorable": 1,
+  "rolls": 24,
+  "max_deferred_run": 8,
+  "test_deferred": 45,
+  "test_forced": 1,
+  "forced_dates": [
+   "2023-08-22"
+  ],
+  "default_plan_days_test": 0,
+  "default_plan_contracts": 0
+ },
+ "SOYBEAN": {
+  "days": 6109,
+  "deferred_days": 12,
+  "forced_rolls_unscorable": 1,
+  "rolls": 24,
+  "max_deferred_run": 3,
+  "test_deferred": 12,
+  "test_forced": 1,
+  "forced_dates": [
+   "2020-05-27"
+  ],
+  "default_plan_days_test": 0,
+  "default_plan_contracts": 0
+ },
+ "WHEAT": {
+  "days": 6107,
+  "deferred_days": 0,
+  "forced_rolls_unscorable": 1,
+  "rolls": 24,
+  "max_deferred_run": 1,
+  "test_deferred": 0,
+  "test_forced": 1,
+  "forced_dates": [
+   "2022-05-04"
+  ],
+  "default_plan_days_test": 0,
+  "default_plan_contracts": 0
+ },
+ "COFFEE": {
+  "days": 4309,
+  "deferred_days": 0,
+  "forced_rolls_unscorable": 0,
+  "rolls": 85,
+  "max_deferred_run": 0,
+  "test_deferred": 0,
+  "test_forced": 0,
+  "forced_dates": [],
+  "default_plan_days_test": 46,
+  "default_plan_contracts": 5
+ },
+ "COCOA": {
+  "days": 6081,
+  "deferred_days": 4,
+  "forced_rolls_unscorable": 0,
+  "rolls": 121,
+  "max_deferred_run": 4,
+  "test_deferred": 4,
+  "test_forced": 0,
+  "forced_dates": [],
+  "default_plan_days_test": 0,
+  "default_plan_contracts": 0
+ },
+ "SUGAR11": {
+  "days": 6081,
+  "deferred_days": 0,
+  "forced_rolls_unscorable": 0,
+  "rolls": 97,
+  "max_deferred_run": 0,
+  "test_deferred": 0,
+  "test_forced": 0,
+  "forced_dates": [],
+  "default_plan_days_test": 0,
+  "default_plan_contracts": 0
+ }
+}

@@ -1,0 +1,112 @@
+# 規格鎖定：2026-11-05（台北時間），在產生任何風險模型或政策結果之前寫定
+# 已知事項（研究選擇歷史）：先前對話已看過 EWMAC+Carry 六商品等權籃子 2011 年後為正、
+# 以及六商品 2008 年後的方向分類與避險結果。因此本研究屬「回溯樣本外模擬」，非預先登錄確認。
+version: spec-v1
+locked_at: 2026-11-05（寫於下載資料後、執行任何模型與政策前）
+
+data:
+  source: pysystemtrade bundled CSV (robcarver17/pysystemtrade, master, raw.githubusercontent)
+  files: multiple_prices_csv, adjusted_prices_csv(核對用), roll_calendars_csv, csvconfig/{instrumentconfig,spreadcosts,rollconfig}
+  instruments: [CORN, SOYBEAN, WHEAT, COFFEE, COCOA, SUGAR11]
+  start: 2000-01-01           # COFFEE 自 2007-02-20 起
+  end: 2024-03-28             # 資料源最後一天；不接 Yahoo 連續價（非逐契約）
+  daily_row: 每日取最後一筆（23:00 收盤）；盤中列捨棄
+  contract_pnl: 同一契約日價差；換月日以前一日 FORWARD 價（新契約）銜接，舊倉平倉、新倉開倉各計一次成本
+
+base_strategy:  # S01：pysystemtrade futures_chapter15 預設參數，不重新調參
+  rules: {ewmac16_64: 3.75, ewmac32_128: 2.65, ewmac64_256: 1.87, carry: 30}   # forecast scalars
+  weights: {ewmac16_64: 0.21, ewmac32_128: 0.08, ewmac64_256: 0.21, carry: 0.50}
+  fdm: 1.31
+  cap: 20
+  carry_smooth_days: 90
+  price_vol: EWMA std of daily same-contract price change, span 35
+  vol_target_annual: 0.10     # 每商品參考資本 K 的 10%
+  K_usd: 1000000
+  position: n = (F/10) * (0.10*K/16) / (sigma_price_daily * pointsize)   # 連續口數（標準化曝險）
+  buffering: none
+  timing: t 日收盤後決策，t+1 日收盤成交（資料只有收盤價）
+  costs: 每口 = SpreadCost*pointsize + 2.97 USD；換月 2 次；敏感度 2 倍
+
+label:
+  h: 5
+  r0: 影子帳戶（B0）t+1 收盤後第 k 個交易日淨損益 / K
+  L0: max(0, -min_j sum_{k<=j} r0)
+  budget: b = kappa * sigma0 * sqrt(h)，kappa = 1.5；sigma0 = 影子淨報酬 EWMA std(span 60)，下界 = 截至 t 的影子日波動擴張中位數 × 0.25（因果，與折無關；寫入後、執行任何模型前修訂）
+  available: 決策日後第 h+1 個交易日收盤（含 t+1 執行延遲）
+  sample: 原策略有部位（|n0|>0）的決策日
+
+features: [ret20_v, ret60_v, ewmac16_64_raw, carry_fc, vol20_ann, vol_ratio_20_120, dist_hi60_v, dist_lo60_v,
+           dir, abs_fc, shadow_ret20, shadow_dd250, shadow_losing_streak, days_since_flip, days_to_roll]
+  # 無成交量／未平倉量（資料源未提供）；不使用商品虛擬變數（咖啡自 2007 起）
+
+models:
+  climatology: 訓練期事件率
+  main: LogisticRegression(L2, C=1.0, standardize on train)
+  tree: DecisionTree(max_depth=3, min_samples_leaf=200)
+  no_class_weight: true
+
+walk_forward:
+  refit: 每年 1 月 1 日；訓練樣本 = label_available < 該年 1/1（嚴格淨化）
+  min_train_years: 3（首個預測年 2005）
+  policy_validation: 測試年 Y 之前所有已產生的樣本外預測年（2005..Y-1，擴張）
+  test_years: 2008..2024Q1
+  state: 測試期連續傳遞；年度更新時保留狀態、清除恢復計數；初始 NORMAL
+
+policy:
+  alpha: 0.5
+  candidates:
+    theta_R_q: [0.70, 0.80]   # 驗證期 p 分布分位數
+    theta_P_q: [0.90, 0.95]
+    theta_L_q: 0.50
+    m: [1, 3]
+  B1: 同樣分位數方案套用於 vol_ratio_20_120（單一波動訊號），無記憶，4 組候選
+  B2: AI 無記憶，4 組候選
+  B3: AI 有記憶，8 組候選
+  B4: 固定倍率 = B3 選定參數在驗證期的平均曝險倍率
+  selection: 驗證期六商品等權組合；最小化每日淨損失 ES95，限制 (a) 年化報酬下降 <= 1.0%（相對 B0）且 (b) 平均曝險倍率 >= 0.5；
+             無可行解時該年回退為不介入（a=1）並記錄
+
+evaluation:
+  primary_contrasts: [B3-B2, B3-B1, B3-B4]
+  primary_metric: 組合每日淨損失 ES95 差；報酬差為共同主要報告
+  bootstrap: 同步日期移動區塊，block=20，B=2000，seed=20261105；敏感度 block 10/40
+  multiplicity: Holm（三個主要對比）
+  probability: Brier 相對 climatology、PR-AUC、ROC-AUC、校準
+  alerts: 事件級（相連正標籤合併；警示起點=由 NORMAL 進入 REDUCED/PAUSED）
+ablations: [A1=B3 vs B2, A2=去除影子策略特徵, A3=B1 單一波動訊號]
+robustness: [成本2倍, 鄰近 m/門檻, 分商品, 分期 2008-2015/2016-2024, 整數口數]
+
+amendments:
+  - id: v1.1
+    date: 2026-11-05（第一次完整結果產生後）
+    after_results: true
+    type: bug_fix
+    change: >
+      (1) days_to_roll 在資料末段（最後一次換月後）為缺值，導致 2024 年初及穀物末段約 140–150 日無風險分數、
+      政策停在前一狀態（覆核）；改為以該商品換月間隔中位數外推下一換月日（換月規則為事前固定日曆，非未來價格）。
+      (2) 可可 2023-07-17 換月價缺漏使 20/120 日波動特徵缺值 120 日；改用 min_periods（15/90）。
+      其餘規格、門檻候選、選擇規則不變；v1 結果保存於 outputs_v1/ 供對照。
+  - id: v2
+    date: 2026-11-05（外部核查後）
+    after_results: true
+    type: causality_and_valuation_fix
+    change: >
+      回應外部核查 P0／P1：(1) 換月改為因果：持有契約與換月日由 src/causal_chain.py 依「最近三次已發生之同月份換月
+      最早位移 − 10 日」事前排定，新契約依 HoldRollCycle；在計畫日當日或之後、舊新契約皆有報價之收盤換月。
+      days_to_roll 改為距此計畫日；不再使用未來實際換月日或全期間中位數。(2) 持有契約無報價日不交易、價差於下一有價日
+      一次認列；資料源提前換月使舊契約消失之 3 日（2020-05-27 黃豆、2022-05-04 小麥、2023-08-22 玉米）標記不可計分，
+      標籤窗內含此日者標籤為未知，組合評估整日排除，所有政策一致。(3) bootstrap p 改為虛無中心化 (1+#)/(B+1)。
+      (4) 警示改為以實際突破預算日為事件時點、一對一匹配、未成熟尾端排除。(5) 新增 B5：以驗證期 B3 對 B0 實現波動比
+      為事前固定倍率、逐筆重算成交與成本之風險配對對照（核查後新增，非原始事前規格）。
+      模型、特徵定義（除 days_to_roll）、門檻候選、選擇規則與比較組 B0–B4 不變。v1.1 輸出保存於 outputs_v1_1/。
+  - id: v2.1
+    date: 2026-11-05（第二次獨立檢查後）
+    after_results: true
+    type: data_handling_fix
+    change: >
+      (1) 每日資料改為每個（價格, 契約代碼）欄位對取同一列的當日最後有值報價，修正舊版逐欄取值造成的價格與代碼錯配；
+      週六、週日列捨棄。(2) 3 個不可計分日在特徵端以新契約同日價差橋接（損益仍為未知、不計分）；其換月成本記入下一日。
+      (3) 持有契約無報價日狀態與恢復計數凍結（NO_QUOTE_HOLD）。(4) 毛損益分解與組合一致整日排除不可計分日期。
+
+repository_note: >
+  公開 repo 只收錄現行版本（spec-v2.1）的程式與輸出；v1、v1.1 的輸出未收入，各版 B0、B3 報酬與判定見上列 amendments 與論文第 3.7 節。

@@ -1,0 +1,22 @@
+{
+ "future_change_features_identical": true,
+ "future_change_mature_labels_identical": true,
+ "future_change_affects_after": true,
+ "prefix_rebuild_identical_CORN": true,
+ "prefix_rebuild_identical_SOYBEAN": true,
+ "prefix_rebuild_identical_WHEAT": true,
+ "prefix_rebuild_identical_COFFEE": true,
+ "prefix_rebuild_identical_COCOA": true,
+ "prefix_rebuild_identical_SUGAR11": true,
+ "predictions_after_train_cut": true,
+ "replay_mismatch": 0,
+ "replay_n": 24574,
+ "net_equals_gross_minus_cost": true,
+ "ledger_nan_mismatch": 0,
+ "ledger_policies_checked": 21,
+ "ledger_max_abs_error_usd": 1.4551915228366852e-11,
+ "cost_max_abs_error_usd": 9.094947017729282e-13,
+ "shadow_equals_B0": true,
+ "year_start_nonNORMAL_previous_state": 55,
+ "roll_days_with_position_not_charged": 0
+}
