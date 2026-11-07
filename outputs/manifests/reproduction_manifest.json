@@ -45,6 +45,7 @@
   "src/fig_arch.py": "7a70bc0b221c806d90829fb3a53ec7e1129f9051c011cff18af5f8cafc984df0",
   "src/fig_case.py": "cde3d8f944061197ec8b4cef5fc723c16f77c31676b5de9ddcc2ff86d819b7da",
   "src/figures.py": "5efb93c17c5390b79c9019d009c539a23179c0f2b04faeac40d4cc6bca3d7599",
+  "src/supplement.py": "4851e7e51b17ebb05135ddefb61320bfce2c94d01855fa14d02f69bc732bd931",
   "tests/acceptance.py": "ffdaf1db73314b38d8a6475a3644ee8c7fc75c593aec49c0fc8a69844d0a2b48"
  },
  "spec_sha256": "86b404f32e09959f0babe96968d0b0d48fd37f53746cb54893dd41175f41755d"

@@ -18,7 +18,7 @@
 | `outputs/predictions/` | 每一筆樣本外風險機率與模型版本 |
 | `outputs/decisions/decisions_B3.csv` | B3 逐日決策紀錄（狀態、門檻、理由碼、資料品質） |
 | `outputs/daily/daily_pnl.csv.gz` | 全部政策逐日持倉、毛損益、成本、倍率 |
-| `outputs/metrics/` | 論文表格與文字中的所有指標 |
+| `outputs/metrics/` | 論文表格與文字中的所有指標（`supplement.json`：5.2 節同門檻比較與 5.4 節警示計分） |
 | `outputs/experiment_log.csv` | 全部政策候選試驗紀錄 |
 | `outputs/manifests/` | 資料品質、環境與檔案雜湊 |
 
@@ -31,6 +31,7 @@
     python src/experiment.py      # 走步模型、政策選擇、B0–B5 與消融、決策紀錄
     python src/evaluation.py      # 指標、bootstrap、Holm、警示事件、損益分解
     python src/diagnostics.py     # 事後等波動診斷
+    python src/supplement.py      # 補充分析：同門檻無記憶政策（5.2 節）、依生效日重算之警示計分（5.4 節）
     python src/figures.py && python src/fig_arch.py && python src/fig_case.py
     python tests/acceptance.py    # → outputs/acceptance.json
 
